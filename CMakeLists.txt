@@ -7,3 +7,4 @@ add_subdirectory(pybind11)
 pybind11_add_module(fast_corpus src/main.cpp)
 
 add_executable(vocab src/vocab.cpp)
+add_executable(corpus src/vocab.cpp src/corpus.cpp)

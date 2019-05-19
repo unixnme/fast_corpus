@@ -18,8 +18,8 @@ public:
      *
      * @param corpus: corpus file to read
      */
-    Vocabulary(const std::string &corpus);
-    Vocabulary(const std::string &corpus, const std::vector<std::string> &tokens);
+    Vocabulary(const std::string &vocab_file);
+    Vocabulary(const std::string &vocab_file, const std::vector<std::string> &tokens);
 
     /** add word to vocab and return its index
      *
@@ -33,23 +33,23 @@ public:
      * @param word
      * @return
      */
-    vocab_idx_t idx(const std::string &word);
+    vocab_idx_t idx(const std::string &word) const;
 
     /** return word pointed by the index
      *
      * @return
      */
-    std::string word(vocab_idx_t idx);
+    std::string word(vocab_idx_t idx) const;
 
     /** return # of words
      *
      * @return
      */
-    size_t size();
+    size_t size() const ;
 
     /** return current vocabulary vector
      */
-    std::vector<std::string> vocab();
+    std::vector<std::string> vocab() const;
     
 private:
     void process(const std::string &corpus);

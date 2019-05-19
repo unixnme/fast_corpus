@@ -11,18 +11,17 @@
 
 using namespace std;
 
-Vocabulary::Vocabulary(const std::string &corpus) {
-    process(corpus);
+Vocabulary::Vocabulary(const std::string &vocab_file) {
+    process(vocab_file);
 }
 
-void Vocabulary::process(const std::string &corpus) {
-    ifstream infile(corpus);
+void Vocabulary::process(const std::string &vocab_file) {
+    ifstream infile(vocab_file);
     if(!infile) {
-        cerr << "reading " << corpus << " error!" << endl;
+        cerr << "reading " << vocab_file << " error!" << endl;
         exit(-1);
     }
     
-    int i = 0;
     std::string buffer;
     while (getline(infile, buffer)) {
         istringstream iss(buffer);
@@ -32,13 +31,7 @@ void Vocabulary::process(const std::string &corpus) {
         for (const auto& word : tokens) {
             add(word);
         }
-
-        if (++i % 100000 == 0) {
-            cout << "processing line #" << (int) i / 1000 << "k" << endl;
-        }
     }
-    
-    cout << idx2word.size() << endl;
 }
 
 Vocabulary::Vocabulary(const std::string &corpus, const std::vector<std::string> &tokens) :
@@ -59,23 +52,25 @@ vocab_idx_t Vocabulary::add(const std::string &word) {
     return idx;
 }
 
-vocab_idx_t Vocabulary::idx(const std::string &word) {
+vocab_idx_t Vocabulary::idx(const std::string &word) const {
+    vocab_idx_t idx;
     if (word2idx.find(word) == word2idx.end()) {
-        return -1;
+        idx = -1;
     } else {
-        return word2idx[word];
+        idx = word2idx.at(word);
     }
+    return idx;
 }
 
-std::string Vocabulary::word(vocab_idx_t idx) {
+std::string Vocabulary::word(vocab_idx_t idx) const {
     return idx2word[idx];
 }
 
-size_t Vocabulary::size() {
+size_t Vocabulary::size() const {
     return idx2word.size();
 }
 
-std::vector<std::string> Vocabulary::vocab() {
+std::vector<std::string> Vocabulary::vocab() const {
     return idx2word;
 }
 
