@@ -12,9 +12,13 @@
 #include "vocab.h"
 
 class Corpus {
-    Corpus(const std::string &corpus_file, ) {
-        
-    }
-}
+public:
+    Corpus(const std::string &corpus_file, const Vocabulary &vocab);
+    std::vector<vocab_idx_t> sentence(size_t idx) const;
+    size_t size() const;
+    
+private:
+    std::vector<std::vector<vocab_idx_t>> data;
+};
 
 #endif //FAST_CORPUS_CORPUS_H

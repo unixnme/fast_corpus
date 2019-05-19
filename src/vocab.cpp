@@ -4,10 +4,10 @@
 
 #include "vocab.h"
 #include <fstream>
-#include <iostream>
 #include <sstream>
 #include <vector>
 #include <iterator>
+#include <iostream>
 
 using namespace std;
 
@@ -72,12 +72,4 @@ size_t Vocabulary::size() const {
 
 std::vector<std::string> Vocabulary::vocab() const {
     return idx2word;
-}
-
-int main(int argc, const char** argv) {
-    Vocabulary vocab(argv[1]);
-    for (const auto & word : vocab.vocab()) {
-        cout << word << endl;
-    }
-    return 0;
 }
