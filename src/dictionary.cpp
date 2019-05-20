@@ -12,6 +12,10 @@ const std::string Dictionary::UNK = "<unk>";
 
 Dictionary::Dictionary(const std::string &corpus_file)
 : ntokens_(0) {
+    word2idx[BOS] = 0;
+    word2idx[EOS] = 1;
+    word2idx[UNK] = 2;
+
     std::ifstream ifs(corpus_file);
     if (!ifs.is_open()) {
         throw std::invalid_argument(
@@ -57,6 +61,9 @@ void Dictionary::readFromFile(std::istream& in) {
 }
 
 void Dictionary::add(const std::string &word) {
+    if (word2idx.find(word) == word2idx.end()) {
+        word2idx[word] = word2idx.size();
+    }
     ntokens_++;
 }
 

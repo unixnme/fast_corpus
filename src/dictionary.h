@@ -6,6 +6,8 @@
 #define FAST_CORPUS_DICTIONARY_H
 
 #include <string>
+#include <unordered_map>
+#include <vector>
 
 class Dictionary {
 public:
@@ -17,6 +19,7 @@ private:
     void readFromFile(std::istream& in);
     void add(const std::string &word);
     size_t ntokens_;
+    std::unordered_map<std::string, size_t> word2idx;
 };
 
 
