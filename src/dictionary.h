@@ -20,6 +20,7 @@ private:
     void add(const std::string &word);
     size_t ntokens_;
     std::unordered_map<std::string, size_t> word2idx;
+    std::vector<std::vector<size_t>> data;
 };
 
 

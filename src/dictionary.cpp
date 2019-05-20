@@ -5,6 +5,7 @@
 #include "dictionary.h"
 #include <iostream>
 #include <fstream>
+#include <ctime>
 
 const std::string Dictionary::BOS = "<s>";
 const std::string Dictionary::EOS = "</s>";
@@ -12,9 +13,13 @@ const std::string Dictionary::UNK = "<unk>";
 
 Dictionary::Dictionary(const std::string &corpus_file)
 : ntokens_(0) {
+    time_t tstart, tend;
+    tstart = time(0);
+
     word2idx[BOS] = 0;
     word2idx[EOS] = 1;
     word2idx[UNK] = 2;
+    data.emplace_back(std::vector<size_t>());
 
     std::ifstream ifs(corpus_file);
     if (!ifs.is_open()) {
@@ -22,6 +27,9 @@ Dictionary::Dictionary(const std::string &corpus_file)
                 corpus_file + " cannot be opened for training!");
     }
     readFromFile(ifs);
+
+    tend = time(0);
+    std::cout << "It took "<< difftime(tend, tstart) <<" second(s)."<< std::endl;
 }
 
 bool Dictionary::readWord(std::istream& in, std::string& word) const {
@@ -61,8 +69,19 @@ void Dictionary::readFromFile(std::istream& in) {
 }
 
 void Dictionary::add(const std::string &word) {
-    if (word2idx.find(word) == word2idx.end()) {
-        word2idx[word] = word2idx.size();
+    if (word == EOS) {
+        if (!data.back().empty())
+            data.emplace_back(std::vector<size_t>());
+    } else {
+        size_t idx;
+        const auto it = word2idx.find(word);
+        if (it == word2idx.end()) {
+            idx = word2idx.size();
+            word2idx[word] = idx;
+        } else {
+            idx = it->second;
+        }
+        data.back().emplace_back(idx);
     }
     ntokens_++;
 }

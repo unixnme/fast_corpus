@@ -4,10 +4,14 @@
 #include <sstream>
 #include <vector>
 #include <iterator>
+#include <ctime>
 
 using namespace std;
 
 Corpus::Corpus(const std::string &corpus_file, const Vocabulary &vocab) {
+    time_t tstart, tend;
+    tstart = time(0);
+
     ifstream infile(corpus_file);
     if(!infile) {
         cerr << "reading " << corpus_file << " error!" << endl;
@@ -31,6 +35,9 @@ Corpus::Corpus(const std::string &corpus_file, const Vocabulary &vocab) {
             cout << "processing line #" << (int) data.size() / 1000000 << "M" << endl;
         }
     }
+
+    tend = time(0);
+    std::cout << "It took "<< difftime(tend, tstart) <<" second(s)."<< std::endl;
 }
 
 std::vector<vocab_idx_t> Corpus::sentence(size_t idx) const {
