@@ -12,7 +12,7 @@ const std::string Dictionary::EOS = "</s>";
 const std::string Dictionary::UNK = "<unk>";
 
 Dictionary::Dictionary(const std::string &corpus_file)
-: ntokens_(0) {
+: ntokens_(0) , vocab({BOS, EOS, UNK}) {
     time_t tstart, tend;
     tstart = time(0);
 
@@ -78,6 +78,7 @@ void Dictionary::add(const std::string &word) {
         if (it == word2idx.end()) {
             idx = word2idx.size();
             word2idx[word] = idx;
+            vocab.emplace_back(word);
         } else {
             idx = it->second;
         }
@@ -86,7 +87,10 @@ void Dictionary::add(const std::string &word) {
     ntokens_++;
 }
 
-int main(int argc, const char** argv) {
-    Dictionary dictionary(argv[1]);
-    return 0;
+std::vector<std::vector<size_t>> Dictionary::get_data() const {
+    return data;
+}
+
+std::vector<std::string> Dictionary::get_vocab() const {
+    return vocab;
 }

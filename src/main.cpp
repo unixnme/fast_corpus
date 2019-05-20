@@ -1,36 +1,18 @@
 #include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
+#include <vector>
+#include "dictionary.h"
 
-int add(int i, int j) {
-    return i + j;
+std::tuple<std::vector<std::vector<size_t>>, std::vector<std::string>>
+process(const std::string& corpus_file) {
+    Dictionary dictionary(corpus_file);
+    return std::make_tuple(dictionary.get_data(), dictionary.get_vocab());
 }
 
 namespace py = pybind11;
 
 PYBIND11_MODULE(fast_corpus, m) {
-m.doc() = R"pbdoc(
-        Pybind11 example plugin
-        -----------------------
-
-        .. currentmodule:: fast_corpus
-
-        .. autosummary::
-           :toctree: _generate
-
-           add
-           subtract
-    )pbdoc";
-
-m.def("add", &add, R"pbdoc(
-        Add two numbers
-
-        Some other explanation about the add function.
-    )pbdoc");
-
-m.def("subtract", [](int i, int j) { return i - j; }, R"pbdoc(
-        Subtract two numbers
-
-        Some other explanation about the subtract function.
-    )pbdoc");
+m.def("process", &process);
 
 #ifdef VERSION_INFO
 m.attr("__version__") = VERSION_INFO;

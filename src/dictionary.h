@@ -12,6 +12,8 @@
 class Dictionary {
 public:
     Dictionary(const std::string &corpus_file);
+    std::vector<std::vector<size_t>> get_data() const;
+    std::vector<std::string> get_vocab() const;
     const static std::string BOS, EOS, UNK;
 
 private:
@@ -21,6 +23,7 @@ private:
     size_t ntokens_;
     std::unordered_map<std::string, size_t> word2idx;
     std::vector<std::vector<size_t>> data;
+    std::vector<std::string> vocab;
 };
 
 
