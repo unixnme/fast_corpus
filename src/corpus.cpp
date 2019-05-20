@@ -21,12 +21,12 @@ Corpus::Corpus(const std::string &corpus_file, const Vocabulary &vocab) {
     std::string buffer;
     while (getline(infile, buffer)) {
         istringstream iss(buffer);
-        vector<string> tokens{istream_iterator<string>{iss},
-            istream_iterator<string>{}};
         
         std::vector<vocab_idx_t> sentence;
-        for (const auto& word : tokens) {
-            sentence.emplace_back(vocab.idx(word));
+        auto it = istream_iterator<string>(iss);
+        while (it != istream_iterator<string>()) {
+            sentence.emplace_back(vocab.idx(*it));
+            it++;
         }
         if (!sentence.empty())
             data.emplace_back(sentence);
