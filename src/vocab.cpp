@@ -25,11 +25,10 @@ void Vocabulary::process(const std::string &vocab_file) {
     std::string buffer;
     while (getline(infile, buffer)) {
         istringstream iss(buffer);
-        vector<string> tokens{istream_iterator<string>{iss},
-            istream_iterator<string>{}};
-
-        for (const auto& word : tokens) {
-            add(word);
+        auto it = istream_iterator<string>(iss);
+        while (it != istream_iterator<string>()) {
+            add(*it);
+            it++;
         }
     }
 }
