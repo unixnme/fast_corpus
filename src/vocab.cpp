@@ -11,6 +11,12 @@
 
 using namespace std;
 
+using Item_t = std::pair<std::string, size_t>;
+
+bool compare(const Item_t& a, const Item_t& b) {
+    return a.second > b.second;
+}
+
 Vocabulary::Vocabulary(const std::string &corpus_file)
     : corpus_file(corpus_file) {
     std::ifstream ifs{corpus_file};
@@ -24,7 +30,10 @@ Vocabulary::Vocabulary(const std::string &corpus_file)
         }
     }
 
-    for (const auto& token : vocab_count) {
+    std::vector<std::pair<std::string, size_t>> array{vocab_count.begin(), vocab_count.end()};
+    std::sort(array.begin(), array.end(), compare);
+
+    for (const auto& token : array) {
         std::cout << token.first << " " << token.second << std::endl;
     }
 }
