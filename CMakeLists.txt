@@ -7,6 +7,6 @@ project(fast_corpus)
 add_subdirectory(pybind11)
 pybind11_add_module(fast_corpus src/main.cpp src/dictionary.cpp)
 
-add_library(vocab src/vocab.cpp)
-add_library(corpus src/vocab.cpp src/corpus.cpp)
 add_library(dictionary src/dictionary.cpp)
+
+add_executable(vocab src/vocab.cpp)

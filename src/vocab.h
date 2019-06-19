@@ -7,54 +7,28 @@
 
 #include <cstdint>
 #include <string>
-#include <unordered_map>
+#include <map>
 #include <vector>
+#include "dictionary.h"
 
-typedef int32_t vocab_idx_t;
+using Item_t = std::pair<std::string, size_t>;
+
+class Compare {
+    bool operator()(const Item_t &a, const Item_t &b) const {
+        return a.second > b.second;
+    }
+};
 
 class Vocabulary {
 public:
-    /** read the corpus and create word2idx mapping
-     *
-     * @param corpus: corpus file to read
-     */
-    Vocabulary(const std::string &vocab_file);
-    Vocabulary(const std::string &vocab_file, const std::vector<std::string> &tokens);
+    explicit Vocabulary(const std::string &corpus_file);
+    void print_vocab_by_count();
 
-    /** add word to vocab and return its index
-     *
-     * @param word: word to add to vocab
-     * @return: its index
-     */
-    vocab_idx_t add(const std::string &word);
-
-    /** find the word in the vocab; if not found, return negative number
-     *
-     * @param word
-     * @return
-     */
-    vocab_idx_t idx(const std::string &word) const;
-
-    /** return word pointed by the index
-     *
-     * @return
-     */
-    std::string word(vocab_idx_t idx) const;
-
-    /** return # of words
-     *
-     * @return
-     */
-    size_t size() const ;
-
-    /** return current vocabulary vector
-     */
-    std::vector<std::string> vocab() const;
-    
 private:
-    void process(const std::string &corpus);
-    std::unordered_map<std::string, vocab_idx_t> word2idx;
-    std::vector<std::string> idx2word;
+    bool readWord(std::istream& in, std::string& word) const;
+
+    std::string corpus_file;
+    std::map<std::string, size_t> vocab_count;
 };
 
 #endif //FAST_CORPUS_VOCAB_H
